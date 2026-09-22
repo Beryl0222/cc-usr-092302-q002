@@ -1,0 +1,83 @@
+// 影像联动与转诊服务的统一术语表。
+// 所有命令、事件与读模型只使用这里登记的取值，避免各机构对同一含义使用不同字眼。
+
+export const KIND = Object.freeze({
+  EXAMINATION_REQUESTED: "EXAMINATION_REQUESTED", // 检查申请
+  DEPLOYMENT_RECORDED: "DEPLOYMENT_RECORDED", // 设备与协议版本登记
+  IMAGE_INDEXED: "IMAGE_INDEXED", // 影像索引（影像本体仍在 PACS，登记的是定位指纹）
+  IMAGE_SUPPRESSED: "IMAGE_SUPPRESSED", // 重复/错挂影像逻辑撤回（不物理删除）
+  INTERPRETATION_RECORDED: "INTERPRETATION_RECORDED", // 结构化判读
+  SUPPLEMENT_RECORDED: "SUPPLEMENT_RECORDED", // 补充意见
+  INTERPRETATION_CORRECTED: "INTERPRETATION_CORRECTED", // 专家更正（新版本，旧版留痕）
+  RISK_STRATIFIED: "RISK_STRATIFIED", // 风险分层
+  CRITICAL_SIGNAL_ESCALATED: "CRITICAL_SIGNAL_ESCALATED", // 危急信号升级（仅相关患者）
+  ESCALATION_ACKNOWLEDGED: "ESCALATION_ACKNOWLEDGED", // 危急升级回执
+  CLINICAL_SIGN_OFF: "CLINICAL_SIGN_OFF", // 临床医生签署
+  REFERRAL_OPENED: "REFERRAL_OPENED", // 建立转诊（含转诊理由）
+  REFERRAL_DISCLOSURE_MADE: "REFERRAL_DISCLOSURE_MADE", // 跨院最小披露
+  CONSENT_GRANTED: "CONSENT_GRANTED", // 患者授权
+  CONSENT_WITHDRAWN: "CONSENT_WITHDRAWN", // 撤回授权
+  REFERRAL_ACCEPTED: "REFERRAL_ACCEPTED", // 接收机构受理
+  APPOINTMENT_OFFERED: "APPOINTMENT_OFFERED", // 接收机构给出预约
+  APPOINTMENT_CONFIRMED: "APPOINTMENT_CONFIRMED", // 预约确认
+  HANDOFF_ACKNOWLEDGED: "HANDOFF_ACKNOWLEDGED", // 交接回执
+  SHARING_DISCONTINUED: "SHARING_DISCONTINUED", // 撤回后接收方停止共享并处置未用资料
+  DISPOSITION_RECORDED: "DISPOSITION_RECORDED", // 最终处置（进入病历）
+});
+
+// 服务目的：四条责任链各自独立，决定由谁判读、谁签署、可披露什么。
+export const PURPOSE = Object.freeze({
+  LOW_RISK_SCREENING: "LOW_RISK_SCREENING", // 低危筛查
+  ASYMPTOMATIC_HIGH_RISK: "ASYMPTOMATIC_HIGH_RISK", // 无症状高危识别
+  PREOPERATIVE_MEASUREMENT: "PREOPERATIVE_MEASUREMENT", // 术前测量
+  CT_FFR_ADJUNCT: "CT_FFR_ADJUNCT", // CT-FFR 补充判断
+});
+
+// 检查模态。
+export const MODALITY = Object.freeze({
+  ECG: "ECG",
+  CARDIAC_CT: "CARDIAC_CT",
+  CORONARY_ANGIOGRAPHY: "CORONARY_ANGIOGRAPHY",
+});
+
+// 风险等级。
+export const RISK = Object.freeze({
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  CRITICAL: "CRITICAL",
+});
+
+// 授权状态（撤回不删除授权记录本身，只翻转状态并记录留痕）。
+export const CONSENT = Object.freeze({
+  GRANTED: "GRANTED",
+  WITHDRAWN: "WITHDRAWN",
+});
+
+// 转诊生命周期状态。
+export const REFERRAL_STATUS = Object.freeze({
+  OPENED: "OPENED", // 已建立，等待受理/预约
+  DISCLOSED: "DISCLOSED", // 已完成最小披露
+  ACCEPTED: "ACCEPTED", // 接收机构受理
+  APPOINTED: "APPOINTED", // 已有确认预约
+  IN_CARE: "IN_CARE", // 完成交接，患者已在接收机构
+  CLOSED: "CLOSED", // 已有最终处置并进入病历
+  REVOKED: "REVOKED", // 授权撤回且尚未进入病历，停止共享
+});
+
+// 责任链中的角色。
+export const ROLE = Object.freeze({
+  REFERRING_CLINICIAN: "REFERRING_CLINICIAN", // 基层（申请）临床医生
+  IMAGING_EXPERT: "IMAGING_EXPERT", // 影像/判读专家
+  CT_FFR_ANALYST: "CT_FFR_ANALYST", // CT-FFR 分析者
+  RECEIVING_CLINICIAN: "RECEIVING_CLINICIAN", // 接收机构临床医生
+  PATIENT: "PATIENT",
+});
+
+// 一条转诊在还原（时间线）时呈现的阶段标签。
+export const CHAIN_LABEL = Object.freeze({
+  [PURPOSE.LOW_RISK_SCREENING]: "低危筛查",
+  [PURPOSE.ASYMPTOMATIC_HIGH_RISK]: "无症状高危识别",
+  [PURPOSE.PREOPERATIVE_MEASUREMENT]: "术前测量",
+  [PURPOSE.CT_FFR_ADJUNCT]: "CT-FFR补充判断",
+});

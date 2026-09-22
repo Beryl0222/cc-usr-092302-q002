@@ -12,16 +12,98 @@
       "type": "string"
     },
     "kind": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "EXAMINATION_REQUESTED",
+        "DEPLOYMENT_RECORDED",
+        "IMAGE_INDEXED",
+        "IMAGE_SUPPRESSED",
+        "INTERPRETATION_RECORDED",
+        "SUPPLEMENT_RECORDED",
+        "INTERPRETATION_CORRECTED",
+        "RISK_STRATIFIED",
+        "CRITICAL_SIGNAL_ESCALATED",
+        "ESCALATION_ACKNOWLEDGED",
+        "CLINICAL_SIGN_OFF",
+        "REFERRAL_OPENED",
+        "REFERRAL_DISCLOSURE_MADE",
+        "CONSENT_GRANTED",
+        "CONSENT_WITHDRAWN",
+        "SHARING_DISCONTINUED",
+        "REFERRAL_ACCEPTED",
+        "APPOINTMENT_OFFERED",
+        "APPOINTMENT_CONFIRMED",
+        "HANDOFF_ACKNOWLEDGED",
+        "DISPOSITION_RECORDED",
+        "PLAN_FROZEN"
+      ]
     },
     "occurred_at": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time",
+      "description": "业务发生时间；断网补传保留原始时间，且必须同时带 backfilled=true"
     },
     "subject_id": {
-      "type": "string"
+      "type": "string",
+      "description": "患者标识；转诊与检查流都以患者为主语"
     },
     "version": {
-      "type": "integer"
+      "type": "integer",
+      "minimum": 1,
+      "description": "流内单调递增版本号，按到达接受顺序分配"
+    },
+    "stream_id": {
+      "type": "string",
+      "description": "exam:<examId> 或 referral:<referralId>"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "全局到达序号，用于机构队列排序"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "入库时间；补传时严格晚于 occurred_at"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "actor_role": {
+      "type": "string",
+      "enum": [
+        "REFERRING_CLINICIAN",
+        "IMAGING_EXPERT",
+        "CT_FFR_ANALYST",
+        "RECEIVING_CLINICIAN",
+        "PATIENT"
+      ]
+    },
+    "chain": {
+      "type": ["string", "null"],
+      "enum": [
+        "LOW_RISK_SCREENING",
+        "ASYMPTOMATIC_HIGH_RISK",
+        "PREOPERATIVE_MEASUREMENT",
+        "CT_FFR_ADJUNCT",
+        null
+      ],
+      "description": "责任链归属；一个事件只能服务一条责任链"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "causation_id": {
+      "type": ["string", "null"]
+    },
+    "supersedes_version": {
+      "type": ["integer", "null"],
+      "description": "专家更正时指向被取代的判读版本"
+    },
+    "backfilled": {
+      "type": "boolean",
+      "description": "true 表示断网恢复后的补传事件"
     }
-  }
+  },
+  "additionalProperties": true
 }

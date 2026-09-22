@@ -1,9 +1,14 @@
 {
   "name": "cardiac-imaging-referral",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "demo": "node examples/fuping-scenario.mjs"
   }
 }
